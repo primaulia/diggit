@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
+    "prestart": "npm run build",
     "react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -15,12 +16,18 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "lodash.debounce": "^4.0.8",
+    "material-design-icons-iconfont": "^3.0.3",
     "morgan": "~1.8.1",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-transition-group": "1.x",
+    "rebass": "^1.0.0-2",
+    "tachyons": "^4.7.4"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
     "react-scripts": "1.0.10"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
