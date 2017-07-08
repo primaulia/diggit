@@ -1,0 +1,8 @@
+.topics-enter {
+  opacity: 0.01;
+}
+
+.topics-enter.topics-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
