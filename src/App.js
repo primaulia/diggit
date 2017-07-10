@@ -85,7 +85,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getTopics(1)
+    this.getTopics(this.state.currentPage)
   }
 
   render() {
