@@ -32,7 +32,7 @@ class Topic extends Component {
   handleVote(count) {
     // Set optimistic state
     this.setState({ 
-      votes: this.state.votes += count
+      votes: this.state.votes + count
     }, this.onVote())
   }
 
