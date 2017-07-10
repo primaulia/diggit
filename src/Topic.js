@@ -6,42 +6,54 @@ const textStyle = {
   whiteSpace: 'pre-line'
 };
 
+let lastSentCount = 0
+let votes = 0
+
 class Topic extends Component {
   constructor(props) {
     super(props)
+    // Keeping votes on state to render optimistically
     this.state = {
       votes: props.data.votes,
-      lastSentCount: props.data.votes
     }
+
+    votes = props.data.votes
+    lastSentCount = votes
 
     this.handleUpvote = this.handleUpvote.bind(this)
     this.handleDownvote = this.handleDownvote.bind(this)
+    // Debounce quick clicks to reduce network calls
     this.onVote = debounce(this.onVote, 500, {leading: true, trailing: true})
   }
 
   handleUpvote() {
-    this.setState((prevState, props) => {
-      return {votes: prevState.votes + 1}
-    })
-    this.onVote()
+    this.handleVote(1)
   }
 
   handleDownvote() {
-    this.setState((prevState, props) => {
-      return {votes: prevState.votes - 1}
-    })
+    this.handleVote(-1)
+  }
+
+  handleVote(count) {
+    votes += count
+    // Set optimistic state
+    this.setState({ votes: votes })
     this.onVote()
   }
 
   onVote() {
-    this.props.onVote(this.state.votes - this.state.lastSentCount)
-    this.setState({ lastSentCount: this.state.votes })
+    // Send vote state change
+    this.props.onVote(votes - lastSentCount)
+    lastSentCount = votes
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       votes: nextProps.data.votes
     })
+
+    votes = nextProps.data.votes
+    lastSentCount = votes
   }
 
   render() {
