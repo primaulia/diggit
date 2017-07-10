@@ -4,21 +4,8 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import Topic from './Topic'
 
 class TopicsList extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      topics: props.topics
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      topics: nextProps.topics
-    })
-  }
-
   render() {
-    const listItems = this.state.topics.map(topic =>
+    const listItems = this.props.topics.map(topic =>
       <Topic data={topic} key={topic.id} onVote={(count) => this.props.onVote(topic.id, count)} />
     )
     return (
