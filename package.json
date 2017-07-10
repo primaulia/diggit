@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
+    "prestart": "npm run build",
     "postinstall": "npm run build",
     "react": "react-scripts start",
     "build": "react-scripts build",
