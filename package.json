@@ -21,13 +21,13 @@
     "morgan": "~1.8.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-scripts": "1.0.10",
     "react-transition-group": "1.x",
     "rebass": "^1.0.0-2",
     "tachyons": "^4.7.4"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",
-    "react-scripts": "1.0.10"
+    "nodemon": "^1.11.0"
   },
   "proxy": "http://localhost:3001"
 }
