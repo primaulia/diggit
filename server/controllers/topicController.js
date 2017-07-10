@@ -34,7 +34,12 @@ module.exports = {
   
   addTopic(req, res, next) {
     let content = req.body.content
-    let topic = new Topic(content)
+    if (content === undefined) {
+      res.status(400).send({ error: 'Content is not specified.' })
+      return
+    }
+    let topic = new Topic(content+"")
+    topics.push(topic)
     topics.sort((a, b) => {
       if (a.votes === b.votes) {
         return ((b.id - a.id)/100)
@@ -44,15 +49,24 @@ module.exports = {
     let page = Math.ceil(topics.indexOf(topic)/20)
     page = page == 0 ? 1 : page
     let response = getResponse(page)
-    response.data.topics.unshift(topic)
     res.status(200).json(response)
-    topics.push(topic)
   },
 
   updownvote(req, res, next) {
-    let topic = getTopicById(req.params.id)
-    if (topic) {
-      topic.votes += req.body.votes
+    const topic = getTopicById(req.params.id)
+    const votes = req.body.votes
+    if (topic && votes && Number.isInteger(votes)) {
+      topic.votes += votes
+    } else {
+      console.log(votes)
+      if (topic === undefined) {
+        res.status(400).send({ error: 'Specified id is not valid.' })
+      } else if (votes === undefined) {
+        res.status(400).send({ error: 'Votes count is not specified.' })
+      } else {
+        res.status(400).send({ error: 'Votes count is invalid.' })
+      }
+      return
     }
     topics.sort((a, b) => {
       if (a.votes === b.votes) {
@@ -60,6 +74,6 @@ module.exports = {
       }
       return b.votes - a.votes
     })
-    res.status(200).end()
+    res.status(200).json(topic)
   }
 };
