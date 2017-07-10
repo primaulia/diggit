@@ -6,19 +6,14 @@ const textStyle = {
   whiteSpace: 'pre-line'
 };
 
-let lastSentCount = 0
-let votes = 0
-
 class Topic extends Component {
   constructor(props) {
     super(props)
     // Keeping votes on state to render optimistically
     this.state = {
       votes: props.data.votes,
+      lastSentCount: props.data.votes
     }
-
-    votes = props.data.votes
-    lastSentCount = votes
 
     this.handleUpvote = this.handleUpvote.bind(this)
     this.handleDownvote = this.handleDownvote.bind(this)
@@ -35,25 +30,24 @@ class Topic extends Component {
   }
 
   handleVote(count) {
-    votes += count
     // Set optimistic state
-    this.setState({ votes: votes })
-    this.onVote()
+    this.setState({ 
+      votes: this.state.votes += count
+    }, this.onVote())
   }
 
   onVote() {
     // Send vote state change
-    this.props.onVote(votes - lastSentCount)
-    lastSentCount = votes
+    this.props.onVote(this.state.votes - this.state.lastSentCount)
+    this.setState({ 
+      lastSentCount: this.state.votes
+    })
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       votes: nextProps.data.votes
     })
-
-    votes = nextProps.data.votes
-    lastSentCount = votes
   }
 
   render() {
