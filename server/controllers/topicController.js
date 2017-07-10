@@ -1,4 +1,5 @@
 var {topics} = require('../db')
+const defaultPerPage = 20 //default to 20 per page
 
 class Topic {
     constructor(content) {
@@ -10,16 +11,18 @@ class Topic {
 }
 
 function getTopicById(id) {
+  // return first topic with matching id
   return topics.filter(topic => topic.id == id)[0]
 }
 
-function getResponse(page) {
-  const start = (page - 1)*20
-  const end = page*20
+function getResponse(page = 1, perPage = defaultPerPage) {
+  // Page is one-indexed
+  const start = (page - 1)*perPage
+  const end = page*perPage
   let response = {
     data: {
       topics: topics.slice(start, end),
-      pages: Math.ceil(topics.length/20),
+      pages: Math.ceil(topics.length/perPage),
       count: topics.length
     }
   }
@@ -29,32 +32,40 @@ function getResponse(page) {
 
 module.exports = {
   getTopics(req, res, next) {
-    res.status(200).json(getResponse(req.query.page || 1))
+    res.status(200).json(getResponse(req.query.page, req.query.limit))
   },
   
   addTopic(req, res, next) {
-    let content = req.body.content
+    const content = req.body.content
     if (content === undefined) {
       res.status(400).send({ error: 'Content is not specified.' })
       return
     }
-    let topic = new Topic(content+"")
+    
+    // Convert content to string
+    const topic = new Topic(content+"")
     topics.push(topic)
     topics.sort((a, b) => {
       if (a.votes === b.votes) {
+        // Vote count holds a higher priority in sorting
         return ((b.id - a.id)/100)
       }
       return b.votes - a.votes
     })
-    let page = Math.ceil(topics.indexOf(topic)/20)
-    page = page == 0 ? 1 : page
-    let response = getResponse(page)
+    
+    const perPage = req.query.limit || defaultPerPage
+    let page = Math.ceil(topics.indexOf(topic)/perPage)
+    // First item is index 0
+    page = page === 0 ? 1 : page
+    
+    let response = getResponse(page, perPage)
     res.status(200).json(response)
   },
 
   updownvote(req, res, next) {
     const topic = getTopicById(req.params.id)
     const votes = req.body.votes
+    
     if (topic && votes && Number.isInteger(votes)) {
       topic.votes += votes
     } else {
@@ -68,12 +79,14 @@ module.exports = {
       }
       return
     }
+    
     topics.sort((a, b) => {
       if (a.votes === b.votes) {
         return ((b.id - a.id)/100)
       }
       return b.votes - a.votes
     })
+    
     res.status(200).json(topic)
   }
 };
