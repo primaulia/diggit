@@ -47,13 +47,13 @@ class App extends Component {
     })
   }
 
-  handleCreateTopic(content) {
+  handleCreateTopic(title, url, content) {
     this.setState({ loading: true })
     let topics = this.state.topics
     let newTopic = {
-      content,
-      id: topics.length + 1,
-      votes: 0
+      title,
+      url,
+      content
     }
     topics.unshift(newTopic)
     this.setState({ topics })
@@ -68,7 +68,7 @@ class App extends Component {
       })
     })
     .then(response => response.json())
-    .then(this.handleTopicsListUpdate)
+    // .then(this.handleTopicsListUpdate)
   }
 
   handleTopicsListUpdate(res) {
