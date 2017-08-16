@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const graphqlHTTP = require('express-graphql');
 
 const index = require('./routes/index');
-const schema = require('./graphql')
+const schema = require('./graphql');
 
 var app = express();
 
@@ -26,7 +26,7 @@ app.use('/graphql', graphqlHTTP({
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
-});
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
