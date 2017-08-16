@@ -1,0 +1,100 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Diggit",
+		"_postman_id": "cf838d4e-4146-942c-4d48-c3ddde90e070",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get topics (limit, page)",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3001/api/v1/topics?limit=1&page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"v1",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get topic by id",
+			"request": {
+				"url": "http://localhost:3001/api/v1/topics/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add topic",
+			"request": {
+				"url": "http://localhost:3001/api/v1/topics",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"JavaScript for People Who Hate JavaScript\",\n\t\"url\": \"https://zachholman.com/posts/javacript-haters\",\n\t\"content\": \"I have a long history with JavaScript, dating back to the glory days of the most perfect technology ever to have graced computers: DHTML.\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Up/Down Vote Topic",
+			"request": {
+				"url": "http://localhost:3001/api/v1/topics/3",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"votes\": 1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
