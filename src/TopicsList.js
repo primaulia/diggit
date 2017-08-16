@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { Container, Subhead, Divider } from 'rebass'
 import { CSSTransitionGroup } from 'react-transition-group'
-import Topic from './Topic'
+import { Link } from 'react-router-dom'
+import TopicCard from './TopicCard'
 
 class TopicsList extends Component {
   render() {
     const listItems = this.props.topics.map(topic =>
-      <Topic data={topic} key={topic.id} onVote={(count) => this.props.onVote(topic.id, count)} />
+      <Link to={`/topics/${topic.id}`} key={topic.id}>
+        <TopicCard data={topic} onVote={(count) => this.props.onVote(topic.id, count)} />
+      </Link>
     )
     return (
       <Container my={4} pl={0}>

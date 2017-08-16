@@ -14,7 +14,8 @@ module.exports = {
         return Topic
           .findAll({
             limit,
-            offset: (page-1)*limit
+            offset: (page-1)*limit,
+            order: [['votes', 'DESC']]
           })
       })
       .then(topics => {

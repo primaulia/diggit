@@ -1,76 +1,33 @@
 import React, { Component } from 'react'
-import debounce from 'lodash.debounce'
-import { Box, Flex, Card, Text, ButtonOutline, Subhead } from 'rebass'
-
-const textStyle = {
-  whiteSpace: 'pre-line'
-};
+import { topicUrl } from './helpers/api'
 
 class Topic extends Component {
   constructor(props) {
     super(props)
-    // Keeping votes on state to render optimistically
     this.state = {
-      votes: props.data.votes,
-      lastSentCount: props.data.votes
+      topic: {}
     }
-
-    this.handleUpvote = this.handleUpvote.bind(this)
-    this.handleDownvote = this.handleDownvote.bind(this)
-    // Debounce quick clicks to reduce network calls
-    this.onVote = debounce(this.onVote, 500, {leading: true, trailing: true})
   }
 
-  handleUpvote() {
-    this.handleVote(1)
-  }
-
-  handleDownvote() {
-    this.handleVote(-1)
-  }
-
-  handleVote(count) {
-    // Set optimistic state
-    this.setState({ 
-      votes: this.state.votes + count
-    }, this.onVote())
-  }
-
-  onVote() {
-    // Send vote state change
-    this.props.onVote(this.state.votes - this.state.lastSentCount)
-    this.setState({ 
-      lastSentCount: this.state.votes
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      votes: nextProps.data.votes
+  componentDidMount() {
+    fetch(topicUrl(this.props.match.params.id))
+    .then(response => response.json())
+    .then(res => {
+      this.setState({
+        topic: res
+      })
     })
   }
 
   render() {
-    const { data } = this.props
     return (
-      <Card my={4} p={4}>
-        <Flex>
-          <Box flex='1'>
-            <Text children={data.content} style={textStyle}/>
-          </Box>
-          <Box>
-            <ButtonOutline onClick={this.handleUpvote}>
-              <i className="material-icons">arrow_drop_up</i>
-            </ButtonOutline>
-            <Subhead center children={this.state.votes} />
-            <ButtonOutline onClick={this.handleDownvote}>
-              <i className="material-icons">arrow_drop_down</i>
-            </ButtonOutline>
-          </Box>
-        </Flex>
-      </Card>
+      <div>
+        <h2>{this.state.topic.title}</h2>
+        <h4>{this.state.topic.url}</h4>
+        <p>{this.state.topic.content}</p>
+      </div>
     )
   }
 }
 
-export default Topic;
+export default Topic
