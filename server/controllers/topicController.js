@@ -66,6 +66,18 @@ module.exports = {
       })
   },
 
+  addTopicByData(title, url, content){
+    return Topic
+      .create({
+        title,
+        url,
+        content
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
+
   updownvote(req, res, next) {
     const id = req.params.id
     const votesAdjustment = req.body.votes
@@ -83,6 +95,21 @@ module.exports = {
       })
       .catch(error => {
         res.status(400).send(error)
+      })
+  },
+
+  updownvoteByData(id, votesAdjustment) {
+    return Topic
+      .update({
+        votes: sequelize.literal(`votes + ${votesAdjustment}`)
+      },{
+        where: { id }
+      })
+      .then(() => {
+        return Topic.findById(id)
+      })
+      .catch(error => {
+        console.log(error)
       })
   }
 }
