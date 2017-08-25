@@ -1,10 +1,12 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+import express from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import graphqlHTTP from 'express-graphql';
 
-var index = require('./routes/index');
+import index from './routes/index';
+import schema from './graphql';
 
 var app = express();
 
@@ -17,9 +19,14 @@ app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 app.use('/api/v1', index);
 
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true
+}))
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
-});
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,4 +46,4 @@ app.use(function(err, req, res, next) {
   res.send({ error: err.message });
 });
 
-module.exports = app;
+module.exports = app
