@@ -1,12 +1,12 @@
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const graphqlHTTP = require('express-graphql');
+import express from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import graphqlHTTP from 'express-graphql';
 
-const index = require('./routes/index');
-const schema = require('./graphql');
+import index from './routes/index';
+import schema from './graphql';
 
 var app = express();
 
@@ -46,4 +46,4 @@ app.use(function(err, req, res, next) {
   res.send({ error: err.message });
 });
 
-module.exports = app;
+module.exports = app
