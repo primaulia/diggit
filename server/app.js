@@ -3,26 +3,21 @@ import path from 'path';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import graphqlHTTP from 'express-graphql';
+import cors from 'cors'
 
 import index from './routes/index';
-import schema from './graphql';
 
 var app = express();
 
-app.use(logger('dev'));
+app.use(cors())
+app.use(logger('dev'))
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.resolve(__dirname, '..', 'build')));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.resolve(__dirname, '..', 'build')))
 
 app.use('/api/v1', index);
-
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true
-}))
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
