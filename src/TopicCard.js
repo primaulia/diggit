@@ -21,26 +21,29 @@ class TopicCard extends Component {
     this.onVote = debounce(this.onVote, 500, {leading: true, trailing: true})
   }
 
-  handleUpvote() {
+  handleUpvote(event) {
+    event.preventDefault()
     this.handleVote(1)
   }
 
-  handleDownvote() {
+  handleDownvote(event) {
+    event.preventDefault()
     this.handleVote(-1)
   }
 
   handleVote(count) {
     // Set optimistic state
+    const votes = this.state.votes + count
     this.setState({ 
-      votes: this.state.votes + count
-    }, this.onVote())
+      votes
+    }, this.onVote(votes))
   }
 
-  onVote() {
+  onVote(votes) {
     // Send vote state change
-    this.props.onVote(this.state.votes - this.state.lastSentCount)
+    this.props.onVote(votes - this.state.lastSentCount)
     this.setState({ 
-      lastSentCount: this.state.votes
+      lastSentCount: votes
     })
   }
 
