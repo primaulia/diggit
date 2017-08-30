@@ -25,6 +25,10 @@ class Dashboard extends Component {
     this.handlePageClick = this.handlePageClick.bind(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setTopics(nextProps)
+  }
+
   getTopics(page) {
     fetch(topicsUrl + "?page=" + page)
     .then(response => response.json())
@@ -91,7 +95,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.props.data)
     return (
       <Container m={5}>
         <Heading children='Diggit' />
@@ -110,6 +113,7 @@ const GetTopicsByPage = gql`
       title
       url
       content
+      votes
     }
   }
 `

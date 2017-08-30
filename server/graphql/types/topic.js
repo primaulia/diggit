@@ -22,5 +22,8 @@ export default new GraphQLObjectType({
     content: {
       type: GraphQLString
     },
+    votes: {
+      type: GraphQLInt
+    }
   }
 });
