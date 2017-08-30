@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon ./bin/www --exec babel-node",
     "start": "babel-node ./bin/www",
+    "prestart": "react-scripts build",
     "react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
