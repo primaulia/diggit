@@ -3,7 +3,9 @@ import path from 'path';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import graphqlHTTP from 'express-graphql';
 import cors from 'cors'
+import schema from './graphql'
 
 import index from './routes/index';
 
@@ -18,6 +20,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.resolve(__dirname, '..', 'build')))
 
 app.use('/api/v1', index);
+
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true
+}))
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
