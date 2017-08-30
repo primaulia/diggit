@@ -5,6 +5,8 @@ import { Container, Heading } from 'rebass'
 import CreateTopic from './CreateTopic'
 import TopicsList from './TopicsList'
 import Pagination from './Pagination'
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import './Dashboard.css'
 
 class Dashboard extends Component {
@@ -85,10 +87,11 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.getTopics(this.state.currentPage)
+    // this.getTopics(this.state.currentPage)
   }
 
   render() {
+    console.log(this.props.data)
     return (
       <Container m={5}>
         <Heading children='Diggit' />
@@ -100,4 +103,19 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const GetTopicsByPage = gql`
+  query GetTopicsByPage($page: Int!) {
+    topics(page: $page) {
+      id
+      title
+      url
+      content
+    }
+  }
+`
+
+const DashboardWithData = graphql(GetTopicsByPage, {
+  options: ({ match }) => ({ variables: { page: 1 } })
+})(Dashboard)
+
+export default DashboardWithData

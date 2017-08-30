@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Group, Flex, ButtonOutline, Button } from 'rebass'
+import { NavLink } from 'react-router-dom'
 
 class Pagination extends Component {
   constructor(props) {
@@ -24,11 +25,12 @@ class Pagination extends Component {
     const { count } = this.props
     const listItems = []
     for (let i = 1; i <= count; i++) {
-      if (i === this.state.current) {
+      listItems.push( <NavLink to={`/${i}`} key={i}>i</NavLink> )
+      /*if (i === this.state.current) {
         listItems.push( <Button children={i} key={i} /> )
       } else {
         listItems.push( <ButtonOutline children={i} key={i} onClick={this.handlePageClick.bind(this, i)}/> )
-      }
+      }*/
     }
     return (
       <Flex justify="center">
